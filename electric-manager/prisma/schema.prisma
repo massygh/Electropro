@@ -1,0 +1,70 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  name      String?
+  email     String   @unique
+  role      String
+  password  String?
+  createdAt DateTime @default(now())
+  // Back relation for Job.assignedTo
+  jobsAssigned Job[]
+}
+
+model Client {
+  id        Int      @id @default(autoincrement())
+  name      String
+  phone     String?
+  email     String?
+  address   String?
+  notes     String?
+  createdAt DateTime @default(now())
+  jobs      Job[]
+  // Back relation for Quote.client
+  quotes    Quote[]
+}
+
+model Job {
+  id           Int      @id @default(autoincrement())
+  client       Client   @relation(fields: [clientId], references: [id])
+  clientId     Int
+  title        String
+  description  String?
+  scheduledAt  DateTime?
+  durationMin  Int?
+  status       String   @default("scheduled")
+  assignedTo   User?    @relation(fields: [assignedToId], references: [id])
+  assignedToId Int?
+  createdAt    DateTime @default(now())
+}
+
+model Product {
+  id                Int    @id @default(autoincrement())
+  sku               String @unique
+  name              String
+  quantity          Int    @default(0)
+  costPrice         Float
+  salePrice         Float
+  lowStockThreshold Int    @default(5)
+}
+
+model Quote {
+  id        Int      @id @default(autoincrement())
+  client    Client   @relation(fields: [clientId], references: [id])
+  clientId  Int
+  items     Json
+  total     Float
+  status    String   @default("draft")
+  pdfUrl    String?
+  createdAt DateTime @default(now())
+}
+
+
+
