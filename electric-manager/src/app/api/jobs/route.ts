@@ -20,5 +20,18 @@ export async function DELETE(req: Request) {
   return NextResponse.json({ ok: true })
 }
 
+export async function PATCH(req: Request) {
+  const body = await req.json()
+  const id = Number(body?.id)
+  if (!id) return NextResponse.json({ error: 'id required' }, { status: 400 })
+  const data: any = {}
+  if (typeof body.title === 'string') data.title = body.title
+  if (typeof body.status === 'string') data.status = body.status
+  if (typeof body.assignedToId === 'number' || body.assignedToId === null) data.assignedToId = body.assignedToId
+  if (typeof body.scheduledAt === 'string') data.scheduledAt = new Date(body.scheduledAt)
+  const updated = await prisma.job.update({ where: { id }, data })
+  return NextResponse.json(updated)
+}
+
 
 
