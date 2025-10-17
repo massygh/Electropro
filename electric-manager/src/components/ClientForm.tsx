@@ -25,12 +25,12 @@ export default function ClientForm() {
 
   return (
     <form onSubmit={onSubmit} className="space-y-3">
-      <div className="font-medium text-black">Nouveau client</div>
-      <input className="w-full border rounded-lg px-3 py-2 text-black" placeholder="Nom" value={name} onChange={(e)=>setName(e.target.value)} />
-      <input className="w-full border rounded-lg px-3 py-2 text-black" placeholder="Téléphone" value={phone} onChange={(e)=>setPhone(e.target.value)} />
-      <input className="w-full border rounded-lg px-3 py-2 text-black" placeholder="Email" value={email} onChange={(e)=>setEmail(e.target.value)} />
-      <input className="w-full border rounded-lg px-3 py-2 text-black" placeholder="Adresse" value={address} onChange={(e)=>setAddress(e.target.value)} />
-      <button disabled={loading} className="w-full px-4 py-2 rounded-lg bg-black text-white hover:opacity-90 transition disabled:opacity-50">{loading ? 'Création...' : 'Créer'}</button>
+      <div className="font-medium text-black dark:text-white">Nouveau client</div>
+      <input className="w-full border border-neutral-300 dark:border-gray-600 rounded-lg px-3 py-2 text-black dark:text-white bg-white dark:bg-gray-700" placeholder="Nom" value={name} onChange={(e)=>setName(e.target.value)} />
+      <input className="w-full border border-neutral-300 dark:border-gray-600 rounded-lg px-3 py-2 text-black dark:text-white bg-white dark:bg-gray-700" placeholder="Téléphone" value={phone} onChange={(e)=>setPhone(e.target.value)} />
+      <input className="w-full border border-neutral-300 dark:border-gray-600 rounded-lg px-3 py-2 text-black dark:text-white bg-white dark:bg-gray-700" placeholder="Email" value={email} onChange={(e)=>setEmail(e.target.value)} />
+      <input className="w-full border border-neutral-300 dark:border-gray-600 rounded-lg px-3 py-2 text-black dark:text-white bg-white dark:bg-gray-700" placeholder="Adresse" value={address} onChange={(e)=>setAddress(e.target.value)} />
+      <button disabled={loading} className="w-full px-4 py-2 rounded-lg bg-black dark:bg-gray-700 text-white hover:opacity-90 transition disabled:opacity-50">{loading ? 'Création...' : 'Créer'}</button>
     </form>
   )
 }

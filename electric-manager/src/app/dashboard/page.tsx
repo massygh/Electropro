@@ -14,15 +14,15 @@ export default async function Dashboard() {
         return { id: j.id, title: j.title, start }
       })
       .filter((e: any) => Boolean(e.start))
-  } catch {
-    const now = new Date()
-    const dayMs = 24 * 60 * 60 * 1000
-    events = [
-      { id: 1, title: "Intervention tableau électrique", start: new Date(now.getTime() + dayMs).toISOString() },
-      { id: 2, title: "Dépannage prise salon", start: new Date(now.getTime() + 2 * dayMs).toISOString() },
-      { id: 3, title: "Pose éclairage extérieur", start: new Date(now.getTime() + 3 * dayMs).toISOString() },
-    ]
-  }
+    } catch {
+      const now = new Date()
+      const dayMs = 24 * 60 * 60 * 1000
+      events = [
+        { id: 1, title: "Intervention tableau électrique", start: new Date(now.getTime() + dayMs).toISOString() },
+        { id: 2, title: "Dépannage prise salo n", start: new Date(now.getTime() + 2 * dayMs).toISOString() },
+        { id: 3, title: "Pose éclairage extérieur", start: new Date(now.getTime() + 3 * dayMs).toISOString() },
+      ]
+    }
 
   const totalEvents = events.length
   const upcoming7d = events.filter(e => {

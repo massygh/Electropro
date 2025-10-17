@@ -14,14 +14,14 @@ export default async function InterventionsPage() {
       <div>
         <div className="flex items-end justify-between">
           <div>
-            <h1 className="text-5xl font-semibold text-black tracking-tight">Interventions</h1>
-            <p className="text-black/60 mt-3 text-lg">Planifiez et suivez vos interventions.</p>
+            <h1 className="text-5xl font-semibold text-black dark:text-white tracking-tight">Interventions</h1>
+            <p className="text-gray-600 dark:text-gray-400 mt-3 text-lg">Planifiez et suivez vos interventions.</p>
           </div>
           <NewInterventionButton clients={clients as any} />
         </div>
       </div>
       <div className="grid grid-cols-1 gap-8 items-start">
-        <div className="rounded-2xl border border-neutral-200 bg-white p-10 shadow-sm">
+        <div className="rounded-2xl border border-neutral-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-10 shadow-sm">
           <InterventionsList jobs={jobs as any} clients={clients as any} />
         </div>
       </div>

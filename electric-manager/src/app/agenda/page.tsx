@@ -14,8 +14,8 @@ export default async function AgendaPage() {
   } catch {}
   return (
     <div className="max-w-5xl mx-auto p-6 space-y-4">
-      <h1 className="text-3xl font-semibold text-black">Agenda</h1>
-      <div className="rounded-2xl border border-neutral-200 bg-white p-3 shadow-sm">
+      <h1 className="text-3xl font-semibold text-black dark:text-white">Agenda</h1>
+      <div className="rounded-2xl border border-neutral-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-3 shadow-sm">
         <div className="h-[520px] overflow-hidden rounded-xl">
           <Calendar events={events} />
         </div>
