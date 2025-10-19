@@ -161,7 +161,6 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       // Pages protégées pour les PRO/ADMIN
       const isAdminRoute = pathname.startsWith('/dashboard') ||
           pathname.startsWith('/interventions') ||
-          pathname.startsWith('/employes') ||
           pathname.startsWith('/chantiers') ||
           pathname.startsWith('/marchandise') ||
           pathname.startsWith('/agenda')

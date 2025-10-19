@@ -153,20 +153,6 @@ export default function DashboardView({ events, totalEvents, upcoming7d }: { eve
           <div className="h-px flex-1 bg-gradient-to-r from-neutral-200 dark:from-gray-700 to-transparent" />
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
-          <Link href="/clients" className="group relative rounded-2xl border border-indigo-100 dark:border-gray-700 bg-white dark:bg-gray-800 p-4 shadow-sm hover:shadow-lg hover:border-indigo-300 dark:hover:border-gray-600 transition-all duration-200 overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-br from-indigo-50/50 dark:from-gray-700/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-            <div className="relative flex items-start gap-3">
-              <div className="p-2.5 rounded-xl bg-indigo-100 dark:bg-gray-700 group-hover:bg-indigo-200 dark:group-hover:bg-gray-600 transition-colors">
-                <svg className="w-5 h-5 text-indigo-600 dark:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                </svg>
-              </div>
-              <div className="flex-1">
-                <div className="text-base font-semibold text-gray-900 dark:text-white group-hover:text-indigo-700 dark:group-hover:text-gray-200 transition-colors">Clients</div>
-                <div className="text-gray-600 dark:text-gray-400 text-xs mt-0.5">Gérer vos clients</div>
-              </div>
-            </div>
-          </Link>
 
           <Link href="/agenda" className="group relative rounded-2xl border border-violet-100 dark:border-gray-700 bg-white dark:bg-gray-800 p-4 shadow-sm hover:shadow-lg hover:border-violet-300 dark:hover:border-gray-600 transition-all duration-200 overflow-hidden">
             <div className="absolute inset-0 bg-gradient-to-br from-violet-50/50 dark:from-gray-700/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -194,21 +180,6 @@ export default function DashboardView({ events, totalEvents, upcoming7d }: { eve
               <div className="flex-1">
                 <div className="text-base font-semibold text-gray-900 dark:text-white group-hover:text-emerald-700 dark:group-hover:text-gray-200 transition-colors">Interventions</div>
                 <div className="text-gray-600 dark:text-gray-400 text-xs mt-0.5">Créer et suivre</div>
-              </div>
-            </div>
-          </Link>
-
-          <Link href="/employes" className="group relative rounded-2xl border border-sky-100 dark:border-gray-700 bg-white dark:bg-gray-800 p-4 shadow-sm hover:shadow-lg hover:border-sky-300 dark:hover:border-gray-600 transition-all duration-200 overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-br from-sky-50/50 dark:from-gray-700/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-            <div className="relative flex items-start gap-3">
-              <div className="p-2.5 rounded-xl bg-sky-100 dark:bg-gray-700 group-hover:bg-sky-200 dark:group-hover:bg-gray-600 transition-colors">
-                <svg className="w-5 h-5 text-sky-600 dark:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
-                </svg>
-              </div>
-              <div className="flex-1">
-                <div className="text-base font-semibold text-gray-900 dark:text-white group-hover:text-sky-700 dark:group-hover:text-gray-200 transition-colors">Employés</div>
-                <div className="text-gray-600 dark:text-gray-400 text-xs mt-0.5">Équipe et rôles</div>
               </div>
             </div>
           </Link>
