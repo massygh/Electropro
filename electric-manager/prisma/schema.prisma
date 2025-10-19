@@ -174,5 +174,13 @@ model Project {
   updatedAt       DateTime @updatedAt
 }
 
+model Notification {
+  id        Int      @id @default(autoincrement())
+  userId    Int                           // Admin qui recoit la notification
+  message   String                        // Message de la notification
+  type      String                        // Type: JOB_STATUS_CHANGE, etc.
+  read      Boolean  @default(false)     // Lu ou non
+  createdAt DateTime @default(now())
+}
 
 

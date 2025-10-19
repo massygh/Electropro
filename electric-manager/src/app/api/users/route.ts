@@ -98,6 +98,20 @@ export async function POST(req: Request) {
       }
     })
 
+    // Si c'est un CLIENT, créer automatiquement un profil Client associé
+    if (accountType === 'CLIENT') {
+      await prisma.client.create({
+        data: {
+          name: name || email,
+          firstName: body.firstName || null,
+          lastName: body.lastName || null,
+          phone: phone || null,
+          email: email,
+          userId: user.id,
+        }
+      })
+    }
+
     return NextResponse.json(user, { status: 201 })
 
   } catch (error) {

@@ -42,8 +42,39 @@ export async function PATCH(
         phone: true,
         accountType: true,
         createdAt: true,
+        client: true,
       }
     })
+
+    // Si c'est un CLIENT, mettre à jour ou créer le profil Client associé
+    if (user.accountType === 'CLIENT') {
+      const clientUpdateData: any = {}
+      if (name !== undefined) clientUpdateData.name = name
+      if (email !== undefined) clientUpdateData.email = email
+      if (phone !== undefined) clientUpdateData.phone = phone
+      if (body.firstName !== undefined) clientUpdateData.firstName = body.firstName
+      if (body.lastName !== undefined) clientUpdateData.lastName = body.lastName
+
+      if (user.client) {
+        // Mettre à jour le Client existant
+        await prisma.client.update({
+          where: { userId: user.id },
+          data: clientUpdateData
+        })
+      } else {
+        // Créer un nouveau Client si il n'existe pas
+        await prisma.client.create({
+          data: {
+            name: name || email || 'Client',
+            firstName: body.firstName || null,
+            lastName: body.lastName || null,
+            phone: phone || null,
+            email: email || null,
+            userId: user.id,
+          }
+        })
+      }
+    }
 
     return NextResponse.json(user)
 

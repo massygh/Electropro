@@ -153,19 +153,21 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 
       const accountType = (auth.user as any).accountType
 
-      // Page utilisateurs - réservée aux ADMIN uniquement
-      if (pathname.startsWith('/utilisateurs') && accountType !== 'ADMIN') {
-        return Response.redirect(new URL('/dashboard', request.url))
-      }
-
-      // Pages protégées pour les PRO/ADMIN
-      const isAdminRoute = pathname.startsWith('/dashboard') ||
-          pathname.startsWith('/interventions') ||
+      // Pages réservées aux ADMIN uniquement
+      const isAdminOnlyRoute = pathname.startsWith('/utilisateurs') ||
           pathname.startsWith('/chantiers') ||
           pathname.startsWith('/marchandise') ||
           pathname.startsWith('/agenda')
 
-      if (isAdminRoute && accountType !== 'PRO' && accountType !== 'ADMIN') {
+      if (isAdminOnlyRoute && accountType !== 'ADMIN') {
+        return Response.redirect(new URL('/dashboard', request.url))
+      }
+
+      // Pages protégées pour les PRO/ADMIN (dashboard et interventions)
+      const isProRoute = pathname.startsWith('/dashboard') ||
+          pathname.startsWith('/interventions')
+
+      if (isProRoute && accountType !== 'PRO' && accountType !== 'ADMIN') {
         return Response.redirect(new URL('/client-portal', request.url))
       }
 

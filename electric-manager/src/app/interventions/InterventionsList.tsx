@@ -17,7 +17,7 @@ type Job = {
 type Client = { id: number; name: string }
 type User = { id: number; name?: string | null; email: string }
 
-export default function InterventionsList({ jobs, clients, users }: { jobs: Job[]; clients: Client[]; users?: User[] }) {
+export default function InterventionsList({ jobs, clients, users, isPro }: { jobs: Job[]; clients: Client[]; users?: User[]; isPro?: boolean }) {
   const [q, setQ] = useState('')
   const [clientId, setClientId] = useState<number | ''>('')
   const [date, setDate] = useState('')
@@ -84,8 +84,17 @@ export default function InterventionsList({ jobs, clients, users }: { jobs: Job[
   }
 
   async function changeStatus(id: number, newStatus: string) {
-    await fetch('/api/jobs', { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id, status: newStatus }) })
-    window.location.reload()
+    try {
+      const res = await fetch(`/api/jobs/${id}/status`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status: newStatus })
+      })
+      if (!res.ok) throw new Error('update failed')
+      window.location.reload()
+    } catch (error) {
+      alert('Erreur lors de la mise à jour du statut')
+    }
   }
 
   async function assignSelected() {
@@ -102,6 +111,8 @@ export default function InterventionsList({ jobs, clients, users }: { jobs: Job[
         return 'bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-700'
       case 'cancelled':
         return 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300 border border-red-300 dark:border-red-700'
+      case 'in_progress':
+        return 'bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300 border border-orange-300 dark:border-orange-700'
       case 'scheduled':
       default:
         return 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 border border-blue-300 dark:border-blue-700'
@@ -112,6 +123,7 @@ export default function InterventionsList({ jobs, clients, users }: { jobs: Job[
     switch (status) {
       case 'done': return 'Terminée'
       case 'cancelled': return 'Annulée'
+      case 'in_progress': return 'En cours'
       case 'scheduled':
       default: return 'Planifiée'
     }
@@ -144,6 +156,7 @@ export default function InterventionsList({ jobs, clients, users }: { jobs: Job[
         <select className="w-full border border-neutral-300 dark:border-gray-600 bg-white dark:bg-gray-700 rounded-lg px-3 py-2 text-black dark:text-white text-sm" value={status} onChange={(e)=>setStatus(e.target.value)}>
           <option value="">Tous statuts</option>
           <option value="scheduled">Planifiée</option>
+          <option value="in_progress">En cours</option>
           <option value="done">Terminée</option>
           <option value="cancelled">Annulée</option>
         </select>
@@ -158,7 +171,7 @@ export default function InterventionsList({ jobs, clients, users }: { jobs: Job[
       <div className="rounded-2xl border border-neutral-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-4 shadow-sm">
         <div className="flex items-center justify-between mb-3">
           <div className="font-medium text-black dark:text-white">Résultats ({filtered.length})</div>
-          <button onClick={deleteSelected} className="px-3 py-1.5 rounded-lg border border-red-300 dark:border-red-800 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 text-sm font-medium">Supprimer sélection</button>
+          {!isPro && <button onClick={deleteSelected} className="px-3 py-1.5 rounded-lg border border-red-300 dark:border-red-800 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 text-sm font-medium">Supprimer sélection</button>}
         </div>
         {filtered.length === 0 && (
           <div className="text-center py-12">
@@ -189,7 +202,7 @@ export default function InterventionsList({ jobs, clients, users }: { jobs: Job[
                   className="p-4 cursor-pointer hover:bg-neutral-50 dark:hover:bg-gray-700/30 transition-colors"
                 >
                   <div className="flex items-start gap-3">
-                    <input
+                    {!isPro && <input
                       type="checkbox"
                       checked={bulk.includes(j.id)}
                       onChange={(e) => {
@@ -198,7 +211,7 @@ export default function InterventionsList({ jobs, clients, users }: { jobs: Job[
                       }}
                       onClick={(e) => e.stopPropagation()}
                       className="mt-1 w-5 h-5 rounded border-neutral-300 dark:border-gray-600"
-                    />
+                    />}
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 mb-2">
                         <h3 className="text-lg font-semibold text-black dark:text-white truncate">{j.title}</h3>
@@ -321,22 +334,27 @@ export default function InterventionsList({ jobs, clients, users }: { jobs: Job[
                         onChange={(e) => changeStatus(j.id, e.target.value)}
                       >
                         <option value="scheduled">Planifiée</option>
+                        <option value="in_progress">En cours</option>
                         <option value="done">Terminée</option>
                         <option value="cancelled">Annulée</option>
                       </select>
-                      <button
-                        onClick={() => setEditingJob(j)}
-                        className="px-4 py-2 rounded-lg border-2 border-indigo-300 dark:border-indigo-800 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-900/20 font-medium transition text-sm"
-                      >
-                        Modifier
-                      </button>
-                      <button
-                        onClick={() => onDelete(j.id)}
-                        disabled={deletingId === j.id}
-                        className="px-4 py-2 rounded-lg border-2 border-red-300 dark:border-red-800 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 disabled:opacity-50 font-medium transition text-sm"
-                      >
-                        {deletingId === j.id ? 'Suppression...' : 'Supprimer'}
-                      </button>
+                      {!isPro && (
+                        <>
+                          <button
+                            onClick={() => setEditingJob(j)}
+                            className="px-4 py-2 rounded-lg border-2 border-indigo-300 dark:border-indigo-800 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-900/20 font-medium transition text-sm"
+                          >
+                            Modifier
+                          </button>
+                          <button
+                            onClick={() => onDelete(j.id)}
+                            disabled={deletingId === j.id}
+                            className="px-4 py-2 rounded-lg border-2 border-red-300 dark:border-red-800 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 disabled:opacity-50 font-medium transition text-sm"
+                          >
+                            {deletingId === j.id ? 'Suppression...' : 'Supprimer'}
+                          </button>
+                        </>
+                      )}
                     </div>
                   </div>
                 )}

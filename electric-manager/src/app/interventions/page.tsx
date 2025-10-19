@@ -2,13 +2,19 @@ import JobForm from '@/components/JobForm'
 import InterventionsList from './InterventionsList'
 import NewInterventionButton from './NewInterventionButton'
 import { prisma } from '@/lib/prisma'
+import { auth } from '@/auth'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
 
 export default async function InterventionsPage() {
+  const session = await auth()
   const clients = await prisma.client.findMany({ orderBy: { name: 'asc' } })
-  const users = await prisma.user.findMany({ orderBy: { email: 'asc' } })
+  // Récupérer uniquement les utilisateurs PRO pour l'assignation
+  const users = await prisma.user.findMany({
+    where: { accountType: 'PRO' },
+    orderBy: { email: 'asc' }
+  })
   const jobs = await prisma.job.findMany({ orderBy: { scheduledAt: 'asc' }, include: { client: true, assignedTo: true } })
 
   // Statistiques
@@ -16,6 +22,8 @@ export default async function InterventionsPage() {
   const planned = jobs.filter(j => j.status === 'scheduled').length
   const done = jobs.filter(j => j.status === 'done').length
   const cancelled = jobs.filter(j => j.status === 'cancelled').length
+
+  const isPro = session?.user?.accountType === 'PRO'
 
   return (
     <div className="p-4">
@@ -31,7 +39,7 @@ export default async function InterventionsPage() {
             </div>
             <p className="text-gray-600 dark:text-gray-400 text-sm ml-5">Planifiez et suivez vos interventions</p>
           </div>
-          <NewInterventionButton clients={clients as any} users={users as any} />
+          {!isPro && <NewInterventionButton clients={clients as any} users={users as any} />}
         </div>
 
         {/* Statistiques KPI */}
@@ -107,7 +115,7 @@ export default async function InterventionsPage() {
           <div className="h-px flex-1 bg-gradient-to-r from-neutral-200 dark:from-gray-700 to-transparent" />
         </div>
 
-        <InterventionsList jobs={jobs as any} clients={clients as any} users={users as any} />
+        <InterventionsList jobs={jobs as any} clients={clients as any} users={users as any} isPro={isPro} />
       </div>
     </div>
   )

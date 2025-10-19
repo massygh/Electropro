@@ -5,10 +5,21 @@ import Link from 'next/link'
 import { useState, useEffect } from 'react'
 import { useSession, signOut } from 'next-auth/react'
 
+interface Notification {
+  id: number
+  message: string
+  type: string
+  read: boolean
+  createdAt: string
+}
+
 export default function Navigation() {
   const pathname = usePathname()
   const [theme, setTheme] = useState<'light' | 'dark'>('light')
   const { data: session } = useSession()
+  const [notifications, setNotifications] = useState<Notification[]>([])
+  const [unreadCount, setUnreadCount] = useState(0)
+  const [showNotifications, setShowNotifications] = useState(false)
 
   useEffect(() => {
     const savedTheme = localStorage.getItem('theme') as 'light' | 'dark' | null
@@ -36,6 +47,56 @@ export default function Navigation() {
     }
   }
 
+  // Charger les notifications pour les ADMIN
+  useEffect(() => {
+    if (session?.user?.accountType === 'ADMIN') {
+      fetchNotifications()
+      // Rafraichir toutes les 30 secondes
+      const interval = setInterval(fetchNotifications, 30000)
+      return () => clearInterval(interval)
+    }
+  }, [session])
+
+  // Fermer le dropdown quand on clique ailleurs
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      const target = e.target as HTMLElement
+      if (showNotifications && !target.closest('.notification-container')) {
+        setShowNotifications(false)
+      }
+    }
+    document.addEventListener('click', handleClickOutside)
+    return () => document.removeEventListener('click', handleClickOutside)
+  }, [showNotifications])
+
+  const fetchNotifications = async () => {
+    try {
+      const res = await fetch('/api/notifications')
+      if (res.ok) {
+        const data = await res.json()
+        setNotifications(data.notifications)
+        setUnreadCount(data.unreadCount)
+      }
+    } catch (error) {
+      console.error('Error fetching notifications:', error)
+    }
+  }
+
+  const markAsRead = async (notificationId: number) => {
+    try {
+      const res = await fetch('/api/notifications', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ notificationId })
+      })
+      if (res.ok) {
+        fetchNotifications()
+      }
+    } catch (error) {
+      console.error('Error marking notification as read:', error)
+    }
+  }
+
   // Ne pas afficher la navigation sur la page d'accueil
   if (pathname === '/') {
     return null
@@ -47,13 +108,63 @@ export default function Navigation() {
         <div className="font-semibold tracking-tight">Electropro</div>
         <nav className="flex items-center gap-4 text-sm">
           <Link href="/dashboard" className="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/15 dark:bg-white/5 dark:hover:bg-white/10 transition">Dashboard</Link>
-          {session?.user?.accountType === 'ADMIN' && (
-            <Link href="/utilisateurs" className="px-3 py-1.5 rounded-lg hover:bg-white/10 dark:hover:bg-white/10 transition">Utilisateurs</Link>
-          )}
           <Link href="/interventions" className="px-3 py-1.5 rounded-lg hover:bg-white/10 dark:hover:bg-white/10 transition">Interventions</Link>
-          <Link href="/chantiers" className="px-3 py-1.5 rounded-lg hover:bg-white/10 dark:hover:bg-white/10 transition">Chantiers</Link>
-          <Link href="/agenda" className="px-3 py-1.5 rounded-lg hover:bg-white/10 dark:hover:bg-white/10 transition">Agenda</Link>
-          <Link href="/marchandise" className="px-3 py-1.5 rounded-lg hover:bg-white/10 dark:hover:bg-white/10 transition">Marchandise</Link>
+          {session?.user?.accountType === 'ADMIN' && (
+            <>
+              <Link href="/utilisateurs" className="px-3 py-1.5 rounded-lg hover:bg-white/10 dark:hover:bg-white/10 transition">Utilisateurs</Link>
+              <Link href="/chantiers" className="px-3 py-1.5 rounded-lg hover:bg-white/10 dark:hover:bg-white/10 transition">Chantiers</Link>
+              <Link href="/agenda" className="px-3 py-1.5 rounded-lg hover:bg-white/10 dark:hover:bg-white/10 transition">Agenda</Link>
+              <Link href="/marchandise" className="px-3 py-1.5 rounded-lg hover:bg-white/10 dark:hover:bg-white/10 transition">Marchandise</Link>
+            </>
+          )}
+          {session?.user?.accountType === 'ADMIN' && (
+            <div className="relative ml-2 notification-container">
+              <button
+                onClick={() => setShowNotifications(!showNotifications)}
+                className="p-2 rounded-lg bg-white/10 hover:bg-white/15 dark:bg-white/5 dark:hover:bg-white/10 transition relative"
+                aria-label="Notifications"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                </svg>
+                {unreadCount > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold">
+                    {unreadCount > 9 ? '9+' : unreadCount}
+                  </span>
+                )}
+              </button>
+
+              {showNotifications && (
+                <div className="absolute right-0 mt-2 w-80 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 z-50 max-h-96 overflow-y-auto">
+                  <div className="p-3 border-b border-gray-200 dark:border-gray-700">
+                    <h3 className="font-semibold text-gray-900 dark:text-white">Notifications</h3>
+                  </div>
+                  {notifications.length === 0 ? (
+                    <div className="p-4 text-center text-gray-500 dark:text-gray-400 text-sm">
+                      Aucune notification
+                    </div>
+                  ) : (
+                    <div className="divide-y divide-gray-200 dark:divide-gray-700">
+                      {notifications.map((notif) => (
+                        <div
+                          key={notif.id}
+                          className={`p-3 hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer ${
+                            !notif.read ? 'bg-blue-50 dark:bg-blue-900/20' : ''
+                          }`}
+                          onClick={() => !notif.read && markAsRead(notif.id)}
+                        >
+                          <p className="text-sm text-gray-900 dark:text-white">{notif.message}</p>
+                          <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                            {new Date(notif.createdAt).toLocaleString('fr-FR')}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+          )}
           <button
             onClick={toggleTheme}
             className="ml-2 p-2 rounded-lg bg-white/10 hover:bg-white/15 dark:bg-white/5 dark:hover:bg-white/10 transition"
