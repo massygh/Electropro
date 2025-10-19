@@ -29,6 +29,9 @@ export async function PATCH(req: Request) {
   if (typeof body.status === 'string') data.status = body.status
   if (typeof body.assignedToId === 'number' || body.assignedToId === null) data.assignedToId = body.assignedToId
   if (typeof body.scheduledAt === 'string') data.scheduledAt = new Date(body.scheduledAt)
+  if (typeof body.description === 'string' || body.description === null) data.description = body.description
+  if (typeof body.address === 'string' || body.address === null) data.address = body.address
+  if (typeof body.clientId === 'number') data.clientId = body.clientId
   const updated = await prisma.job.update({ where: { id }, data })
   return NextResponse.json(updated)
 }

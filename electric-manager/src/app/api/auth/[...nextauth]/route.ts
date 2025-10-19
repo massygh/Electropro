@@ -1,26 +1,19 @@
-import NextAuth from "next-auth"
-import CredentialsProvider from "next-auth/providers/credentials"
-import { prisma } from "@/lib/prisma"
-import { compare } from "bcryptjs"
+/**
+ * Route API NextAuth
+ *
+ * Ce fichier crée les endpoints d'authentification:
+ * - GET/POST /api/auth/signin - Page de connexion
+ * - GET/POST /api/auth/signout - Déconnexion
+ * - GET /api/auth/session - Récupérer la session
+ * - GET /api/auth/csrf - Token CSRF
+ * - etc.
+ *
+ * Le [...nextauth] signifie que cette route capture tous les chemins
+ * sous /api/auth/* (c'est un "catch-all route")
+ */
 
-const handler = NextAuth({
-  providers: [
-    CredentialsProvider({
-      name: "Credentials",
-      credentials: { email: {}, password: {} },
-      async authorize(credentials) {
-        if (!credentials?.email || !credentials.password) return null
-        const user = await prisma.user.findUnique({ where: { email: credentials.email } })
-        if (!user || !user.password) return null
-        const valid = await compare(credentials.password, user.password)
-        return valid ? user : null
-      },
-    }),
-  ],
-  session: { strategy: "jwt" },
-})
+import { handlers } from "@/auth"
 
-export { handler as GET, handler as POST }
-
-
-
+// Export des handlers GET et POST
+// NextAuth gère automatiquement toutes les routes nécessaires
+export const { GET, POST } = handlers

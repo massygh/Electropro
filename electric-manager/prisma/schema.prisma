@@ -7,42 +7,111 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// Enum pour les types de comptes
+enum AccountType {
+  ADMIN      // Administrateur (propriétaire)
+  PRO        // Professionnel (employé)
+  CLIENT     // Client
+}
+
 model User {
-  id        Int      @id @default(autoincrement())
-  name      String?
-  email     String   @unique
-  role      String
-  password  String?
-  createdAt DateTime @default(now())
-  // Back relation for Job.assignedTo
+  id           Int          @id @default(autoincrement())
+  firstName    String?
+  lastName     String?
+  name         String?      // Garde pour compatibilité
+  email        String       @unique
+  emailVerified DateTime?   // Pour NextAuth
+  phone        String?
+  dateOfBirth  DateTime?
+  role         String?      // Ancien champ - peut être déprécié
+  accountType  AccountType  @default(PRO) // Type de compte
+  password     String?      // Mot de passe hashé (optionnel pour migration)
+  image        String?      // Photo de profil
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @default(now()) @updatedAt
+
+  // Relations NextAuth
+  accounts     Account[]
+  sessions     Session[]
+
+  // Back relations
   jobsAssigned Job[]
+  projects     Project[]
+  client       Client?      // Un User CLIENT peut avoir un profil Client associé
+}
+
+// Modèles NextAuth requis
+model Account {
+  id                String  @id @default(cuid())
+  userId            Int
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       Int
+  expires      DateTime
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
 }
 
 model Client {
-  id        Int      @id @default(autoincrement())
-  name      String
+  id        Int       @id @default(autoincrement())
+  firstName String?   // Nouveau champ séparé (optionnel pour migration)
+  lastName  String?   // Nouveau champ séparé (optionnel pour migration)
+  name      String    // Garde pour compatibilité - requis
   phone     String?
   email     String?
   address   String?
   notes     String?
-  createdAt DateTime @default(now())
+  createdAt DateTime  @default(now())
+
+  // Relation avec User pour les clients qui ont un compte
+  user      User?     @relation(fields: [userId], references: [id])
+  userId    Int?      @unique
+
+  // Back relations
   jobs      Job[]
-  // Back relation for Quote.client
   quotes    Quote[]
+  invoices  Invoice[]
+  projects  Project[]
 }
 
 model Job {
-  id           Int      @id @default(autoincrement())
-  client       Client   @relation(fields: [clientId], references: [id])
+  id           Int       @id @default(autoincrement())
+  client       Client    @relation(fields: [clientId], references: [id])
   clientId     Int
   title        String
   description  String?
+  address      String?   // Nouveau champ - adresse de l'intervention
   scheduledAt  DateTime?
   durationMin  Int?
-  status       String   @default("scheduled")
-  assignedTo   User?    @relation(fields: [assignedToId], references: [id])
+  status       String    @default("scheduled")
+  assignedTo   User?     @relation(fields: [assignedToId], references: [id])
   assignedToId Int?
-  createdAt    DateTime @default(now())
+  createdAt    DateTime  @default(now())
 }
 
 model Product {
@@ -64,6 +133,45 @@ model Quote {
   status    String   @default("draft")
   pdfUrl    String?
   createdAt DateTime @default(now())
+}
+
+model Invoice {
+  id          Int      @id @default(autoincrement())
+  client      Client   @relation(fields: [clientId], references: [id])
+  clientId    Int
+  invoiceNumber String @unique  // Numéro de facture
+  items       Json                // Lignes de la facture
+  subtotal    Float               // Sous-total HT
+  taxRate     Float   @default(20.0) // Taux de TVA (20%)
+  taxAmount   Float               // Montant TVA
+  total       Float               // Total TTC
+  status      String  @default("draft") // draft, sent, paid, cancelled
+  dueDate     DateTime?           // Date d'échéance
+  paidAt      DateTime?           // Date de paiement
+  pdfUrl      String?             // URL du PDF généré
+  notes       String?             // Notes additionnelles
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Project {
+  id              Int      @id @default(autoincrement())
+  name            String              // Nom du chantier
+  client          Client   @relation(fields: [clientId], references: [id])
+  clientId        Int
+  address         String              // Adresse du chantier
+  description     String?             // Description du chantier
+  startDate       DateTime            // Date de début
+  estimatedEndDate DateTime           // Date de fin prévue
+  actualEndDate   DateTime?           // Date de fin réelle
+  status          String  @default("planned") // planned, in_progress, completed, cancelled
+  assignedTo      User?    @relation(fields: [assignedToId], references: [id])
+  assignedToId    Int?                // Employé principal assigné
+  budget          Float?              // Budget estimé
+  actualCost      Float?              // Coût réel
+  notes           String?             // Notes
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 }
 
 

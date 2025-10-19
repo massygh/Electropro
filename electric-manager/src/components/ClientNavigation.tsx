@@ -1,12 +1,10 @@
 'use client'
 
-import { usePathname } from 'next/navigation'
 import Link from 'next/link'
 import { useState, useEffect } from 'react'
 import { useSession, signOut } from 'next-auth/react'
 
-export default function Navigation() {
-  const pathname = usePathname()
+export default function ClientNavigation() {
   const [theme, setTheme] = useState<'light' | 'dark'>('light')
   const { data: session } = useSession()
 
@@ -20,7 +18,6 @@ export default function Navigation() {
         document.documentElement.classList.remove('dark')
       }
     } else {
-      // Par défaut, mode light - on s'assure qu'il n'y a pas de classe dark
       document.documentElement.classList.remove('dark')
     }
   }, [])
@@ -36,27 +33,37 @@ export default function Navigation() {
     }
   }
 
-  // Ne pas afficher la navigation sur la page d'accueil
-  if (pathname === '/') {
-    return null
-  }
-
   return (
-    <div className="rounded-none sm:rounded-b-2xl bg-gradient-to-r from-indigo-600 via-violet-600 to-fuchsia-600 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 text-white shadow-sm dark:shadow-gray-900/50">
+    <div className="rounded-none sm:rounded-b-2xl bg-gradient-to-r from-blue-600 via-cyan-600 to-teal-600 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 text-white shadow-sm dark:shadow-gray-900/50">
       <div className="px-5 py-4 flex items-center justify-between max-w-7xl mx-auto">
-        <div className="font-semibold tracking-tight">Electropro</div>
+        {/* Logo et titre */}
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center">
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+            </svg>
+          </div>
+          <div>
+            <div className="font-bold text-lg tracking-tight">ElectroPro</div>
+            <div className="text-xs opacity-75">Espace Client</div>
+          </div>
+        </div>
+
+        {/* Navigation client */}
         <nav className="flex items-center gap-4 text-sm">
-          <Link href="/dashboard" className="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/15 dark:bg-white/5 dark:hover:bg-white/10 transition">Dashboard</Link>
-          {session?.user?.accountType === 'ADMIN' && (
-            <Link href="/utilisateurs" className="px-3 py-1.5 rounded-lg hover:bg-white/10 dark:hover:bg-white/10 transition">Utilisateurs</Link>
-          )}
-          <Link href="/interventions" className="px-3 py-1.5 rounded-lg hover:bg-white/10 dark:hover:bg-white/10 transition">Interventions</Link>
-          <Link href="/chantiers" className="px-3 py-1.5 rounded-lg hover:bg-white/10 dark:hover:bg-white/10 transition">Chantiers</Link>
-          <Link href="/agenda" className="px-3 py-1.5 rounded-lg hover:bg-white/10 dark:hover:bg-white/10 transition">Agenda</Link>
-          <Link href="/marchandise" className="px-3 py-1.5 rounded-lg hover:bg-white/10 dark:hover:bg-white/10 transition">Marchandise</Link>
+          <Link
+            href="/client-portal"
+            className="px-4 py-2 rounded-lg bg-white/10 hover:bg-white/20 dark:bg-white/5 dark:hover:bg-white/10 transition flex items-center gap-2"
+          >
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+            </svg>
+            Tableau de bord
+          </Link>
+
           <button
             onClick={toggleTheme}
-            className="ml-2 p-2 rounded-lg bg-white/10 hover:bg-white/15 dark:bg-white/5 dark:hover:bg-white/10 transition"
+            className="p-2 rounded-lg bg-white/10 hover:bg-white/20 dark:bg-white/5 dark:hover:bg-white/10 transition"
             aria-label="Toggle theme"
           >
             {theme === 'light' ? (
@@ -70,14 +77,18 @@ export default function Navigation() {
             )}
           </button>
 
+          {/* Info utilisateur et deconnexion */}
           {session?.user && (
-            <div className="ml-4 flex items-center gap-3 border-l border-white/20 pl-4">
-              <div className="text-right">
-                <div className="text-sm font-semibold">{session.user.name}</div>
-                <div className="text-xs opacity-75">
-                  {session.user.accountType === 'ADMIN' && 'Administrateur'}
-                  {session.user.accountType === 'PRO' && 'Professionnel'}
-                  {session.user.accountType === 'CLIENT' && 'Client'}
+            <div className="ml-2 flex items-center gap-3 border-l border-white/20 pl-4">
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center">
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                  </svg>
+                </div>
+                <div className="text-right">
+                  <div className="text-sm font-semibold">{session.user.name}</div>
+                  <div className="text-xs opacity-75">Client</div>
                 </div>
               </div>
               <button

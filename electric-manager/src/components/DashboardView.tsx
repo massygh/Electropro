@@ -31,17 +31,17 @@ export default function DashboardView({ events, totalEvents, upcoming7d }: { eve
   }
 
   return (
-    <div className="max-w-7xl mx-auto space-y-8">
+    <div className="max-w-7xl mx-auto space-y-5">
       {/* Header avec gradient animé */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pt-2">
-        <div className="space-y-2">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pt-1">
+        <div className="space-y-1">
           <div className="flex items-center gap-3">
-            <div className="w-1.5 h-8 bg-gradient-to-b from-indigo-600 via-purple-600 to-pink-600 dark:from-gray-300 dark:to-gray-400 rounded-full shadow-lg shadow-indigo-500/50 dark:shadow-none animate-gradient" />
-            <h1 className="text-3xl sm:text-4xl font-bold text-black dark:text-white tracking-tight">
+            <div className="w-1.5 h-7 bg-gradient-to-b from-indigo-600 via-purple-600 to-pink-600 dark:from-gray-300 dark:to-gray-400 rounded-full shadow-lg shadow-indigo-500/50 dark:shadow-none animate-gradient" />
+            <h1 className="text-2xl sm:text-3xl font-bold text-black dark:text-white tracking-tight">
               Tableau de bord
             </h1>
           </div>
-          <p className="text-gray-600 dark:text-gray-400 text-base ml-5">Bienvenue sur votre espace de gestion Electropro</p>
+          <p className="text-gray-600 dark:text-gray-400 text-sm ml-5">Bienvenue sur votre espace de gestion Electropro</p>
         </div>
         <div className="flex gap-3 ml-5 sm:ml-0">
           <Link
@@ -67,9 +67,9 @@ export default function DashboardView({ events, totalEvents, upcoming7d }: { eve
       </div>
 
       {/* KPIs améliorés avec icônes */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
         {/* Interventions planifiées */}
-        <div className="group relative rounded-2xl border-2 border-indigo-200 dark:border-gray-700 bg-gradient-to-br from-indigo-100 via-purple-50 to-white dark:from-gray-800 dark:via-gray-900 dark:to-gray-900 p-6 shadow-lg shadow-indigo-200/50 dark:shadow-none hover:shadow-2xl hover:shadow-indigo-300/60 dark:hover:shadow-none hover:-translate-y-1 transition-all duration-500 overflow-hidden">
+        <div className="group relative rounded-2xl border-2 border-indigo-200 dark:border-gray-700 bg-gradient-to-br from-indigo-100 via-purple-50 to-white dark:from-gray-800 dark:via-gray-900 dark:to-gray-900 p-4 shadow-lg shadow-indigo-200/50 dark:shadow-none hover:shadow-2xl hover:shadow-indigo-300/60 dark:hover:shadow-none hover:-translate-y-1 transition-all duration-500 overflow-hidden">
           <div className="absolute top-0 right-0 w-40 h-40 bg-gradient-to-br from-indigo-400/30 via-purple-400/20 dark:from-gray-700/20 to-transparent rounded-full blur-3xl -mr-20 -mt-20 group-hover:scale-150 group-hover:rotate-45 transition-all duration-700" />
           <div className="absolute inset-0 bg-gradient-to-br from-white/50 dark:from-transparent via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
           <div className="relative">
@@ -82,7 +82,7 @@ export default function DashboardView({ events, totalEvents, upcoming7d }: { eve
               <div className="px-3 py-1 rounded-full bg-gradient-to-r from-indigo-500 to-purple-600 dark:from-gray-700 dark:to-gray-700 text-white dark:text-gray-300 text-xs font-bold shadow-md">Total</div>
             </div>
             <div className="text-sm font-semibold text-indigo-700 dark:text-gray-400 mb-1">Interventions planifiées</div>
-            <div className="text-6xl font-black bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 dark:from-white dark:to-white bg-clip-text text-transparent mb-2">{totalEvents}</div>
+            <div className="text-3xl font-black bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 dark:from-white dark:to-white bg-clip-text text-transparent mb-2">{totalEvents}</div>
             <div className="flex items-center gap-2 mt-3">
               <div className="flex-1 h-2.5 rounded-full bg-gradient-to-r from-indigo-100 to-purple-100 dark:bg-gray-700 overflow-hidden shadow-inner">
                 <div className="h-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 dark:from-gray-500 dark:to-gray-600 rounded-full w-full animate-gradient" />
@@ -92,7 +92,7 @@ export default function DashboardView({ events, totalEvents, upcoming7d }: { eve
         </div>
 
         {/* Sur 7 jours */}
-        <div className="group relative rounded-2xl border-2 border-emerald-200 dark:border-gray-700 bg-gradient-to-br from-emerald-100 via-teal-50 to-white dark:from-gray-800 dark:via-gray-900 dark:to-gray-900 p-6 shadow-lg shadow-emerald-200/50 dark:shadow-none hover:shadow-2xl hover:shadow-emerald-300/60 dark:hover:shadow-none hover:-translate-y-1 transition-all duration-500 overflow-hidden">
+        <div className="group relative rounded-2xl border-2 border-emerald-200 dark:border-gray-700 bg-gradient-to-br from-emerald-100 via-teal-50 to-white dark:from-gray-800 dark:via-gray-900 dark:to-gray-900 p-4 shadow-lg shadow-emerald-200/50 dark:shadow-none hover:shadow-2xl hover:shadow-emerald-300/60 dark:hover:shadow-none hover:-translate-y-1 transition-all duration-500 overflow-hidden">
           <div className="absolute top-0 right-0 w-40 h-40 bg-gradient-to-br from-emerald-400/30 via-teal-400/20 dark:from-gray-700/20 to-transparent rounded-full blur-3xl -mr-20 -mt-20 group-hover:scale-150 group-hover:rotate-45 transition-all duration-700" />
           <div className="absolute inset-0 bg-gradient-to-br from-white/50 dark:from-transparent via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
           <div className="relative">
@@ -105,7 +105,7 @@ export default function DashboardView({ events, totalEvents, upcoming7d }: { eve
               <div className="px-3 py-1 rounded-full bg-gradient-to-r from-emerald-500 to-teal-600 dark:from-gray-700 dark:to-gray-700 text-white dark:text-gray-300 text-xs font-bold shadow-md">7 jours</div>
             </div>
             <div className="text-sm font-semibold text-emerald-700 dark:text-gray-400 mb-1">Prochaines interventions</div>
-            <div className="text-6xl font-black bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 dark:from-white dark:to-white bg-clip-text text-transparent mb-2">{upcoming7d}</div>
+            <div className="text-3xl font-black bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 dark:from-white dark:to-white bg-clip-text text-transparent mb-2">{upcoming7d}</div>
             <div className="flex items-center gap-2 mt-3">
               <div className="flex-1 h-2.5 rounded-full bg-gradient-to-r from-emerald-100 to-teal-100 dark:bg-gray-700 overflow-hidden shadow-inner">
                 <div
@@ -119,7 +119,7 @@ export default function DashboardView({ events, totalEvents, upcoming7d }: { eve
         </div>
 
         {/* Taux d'occupation */}
-        <div className="group relative rounded-2xl border-2 border-amber-200 dark:border-gray-700 bg-gradient-to-br from-amber-100 via-orange-50 to-white dark:from-gray-800 dark:via-gray-900 dark:to-gray-900 p-6 shadow-lg shadow-amber-200/50 dark:shadow-none hover:shadow-2xl hover:shadow-amber-300/60 dark:hover:shadow-none hover:-translate-y-1 transition-all duration-500 overflow-hidden">
+        <div className="group relative rounded-2xl border-2 border-amber-200 dark:border-gray-700 bg-gradient-to-br from-amber-100 via-orange-50 to-white dark:from-gray-800 dark:via-gray-900 dark:to-gray-900 p-4 shadow-lg shadow-amber-200/50 dark:shadow-none hover:shadow-2xl hover:shadow-amber-300/60 dark:hover:shadow-none hover:-translate-y-1 transition-all duration-500 overflow-hidden">
           <div className="absolute top-0 right-0 w-40 h-40 bg-gradient-to-br from-amber-400/30 via-orange-400/20 dark:from-gray-700/20 to-transparent rounded-full blur-3xl -mr-20 -mt-20 group-hover:scale-150 group-hover:rotate-45 transition-all duration-700" />
           <div className="absolute inset-0 bg-gradient-to-br from-white/50 dark:from-transparent via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
           <div className="relative">
@@ -132,7 +132,7 @@ export default function DashboardView({ events, totalEvents, upcoming7d }: { eve
               <div className="px-3 py-1 rounded-full bg-gradient-to-r from-amber-500 to-orange-600 dark:from-gray-700 dark:to-gray-700 text-white dark:text-gray-300 text-xs font-bold shadow-md">Activité</div>
             </div>
             <div className="text-sm font-semibold text-amber-700 dark:text-gray-400 mb-1">Taux d'occupation</div>
-            <div className="text-6xl font-black bg-gradient-to-r from-amber-600 via-orange-600 to-red-600 dark:from-white dark:to-white bg-clip-text text-transparent mb-2">{Math.min(100, Math.round((upcoming7d / Math.max(1, totalEvents)) * 100))}%</div>
+            <div className="text-3xl font-black bg-gradient-to-r from-amber-600 via-orange-600 to-red-600 dark:from-white dark:to-white bg-clip-text text-transparent mb-2">{Math.min(100, Math.round((upcoming7d / Math.max(1, totalEvents)) * 100))}%</div>
             <div className="flex items-center gap-2 mt-3">
               <div className="flex-1 h-2.5 rounded-full bg-gradient-to-r from-amber-100 to-orange-100 dark:bg-gray-700 overflow-hidden shadow-inner">
                 <div
@@ -152,8 +152,8 @@ export default function DashboardView({ events, totalEvents, upcoming7d }: { eve
           <h2 className="text-xl font-semibold text-black dark:text-white">Accès rapides</h2>
           <div className="h-px flex-1 bg-gradient-to-r from-neutral-200 dark:from-gray-700 to-transparent" />
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
-          <Link href="/clients" className="group relative rounded-2xl border border-indigo-100 dark:border-gray-700 bg-white dark:bg-gray-800 p-5 shadow-sm hover:shadow-lg hover:border-indigo-300 dark:hover:border-gray-600 transition-all duration-200 overflow-hidden">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
+          <Link href="/clients" className="group relative rounded-2xl border border-indigo-100 dark:border-gray-700 bg-white dark:bg-gray-800 p-4 shadow-sm hover:shadow-lg hover:border-indigo-300 dark:hover:border-gray-600 transition-all duration-200 overflow-hidden">
             <div className="absolute inset-0 bg-gradient-to-br from-indigo-50/50 dark:from-gray-700/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
             <div className="relative flex items-start gap-3">
               <div className="p-2.5 rounded-xl bg-indigo-100 dark:bg-gray-700 group-hover:bg-indigo-200 dark:group-hover:bg-gray-600 transition-colors">
@@ -168,7 +168,7 @@ export default function DashboardView({ events, totalEvents, upcoming7d }: { eve
             </div>
           </Link>
 
-          <Link href="/agenda" className="group relative rounded-2xl border border-violet-100 dark:border-gray-700 bg-white dark:bg-gray-800 p-5 shadow-sm hover:shadow-lg hover:border-violet-300 dark:hover:border-gray-600 transition-all duration-200 overflow-hidden">
+          <Link href="/agenda" className="group relative rounded-2xl border border-violet-100 dark:border-gray-700 bg-white dark:bg-gray-800 p-4 shadow-sm hover:shadow-lg hover:border-violet-300 dark:hover:border-gray-600 transition-all duration-200 overflow-hidden">
             <div className="absolute inset-0 bg-gradient-to-br from-violet-50/50 dark:from-gray-700/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
             <div className="relative flex items-start gap-3">
               <div className="p-2.5 rounded-xl bg-violet-100 dark:bg-gray-700 group-hover:bg-violet-200 dark:group-hover:bg-gray-600 transition-colors">
@@ -183,7 +183,7 @@ export default function DashboardView({ events, totalEvents, upcoming7d }: { eve
             </div>
           </Link>
 
-          <Link href="/interventions" className="group relative rounded-2xl border border-emerald-100 dark:border-gray-700 bg-white dark:bg-gray-800 p-5 shadow-sm hover:shadow-lg hover:border-emerald-300 dark:hover:border-gray-600 transition-all duration-200 overflow-hidden">
+          <Link href="/interventions" className="group relative rounded-2xl border border-emerald-100 dark:border-gray-700 bg-white dark:bg-gray-800 p-4 shadow-sm hover:shadow-lg hover:border-emerald-300 dark:hover:border-gray-600 transition-all duration-200 overflow-hidden">
             <div className="absolute inset-0 bg-gradient-to-br from-emerald-50/50 dark:from-gray-700/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
             <div className="relative flex items-start gap-3">
               <div className="p-2.5 rounded-xl bg-emerald-100 dark:bg-gray-700 group-hover:bg-emerald-200 dark:group-hover:bg-gray-600 transition-colors">
@@ -198,7 +198,7 @@ export default function DashboardView({ events, totalEvents, upcoming7d }: { eve
             </div>
           </Link>
 
-          <Link href="/employes" className="group relative rounded-2xl border border-sky-100 dark:border-gray-700 bg-white dark:bg-gray-800 p-5 shadow-sm hover:shadow-lg hover:border-sky-300 dark:hover:border-gray-600 transition-all duration-200 overflow-hidden">
+          <Link href="/employes" className="group relative rounded-2xl border border-sky-100 dark:border-gray-700 bg-white dark:bg-gray-800 p-4 shadow-sm hover:shadow-lg hover:border-sky-300 dark:hover:border-gray-600 transition-all duration-200 overflow-hidden">
             <div className="absolute inset-0 bg-gradient-to-br from-sky-50/50 dark:from-gray-700/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
             <div className="relative flex items-start gap-3">
               <div className="p-2.5 rounded-xl bg-sky-100 dark:bg-gray-700 group-hover:bg-sky-200 dark:group-hover:bg-gray-600 transition-colors">
@@ -213,7 +213,7 @@ export default function DashboardView({ events, totalEvents, upcoming7d }: { eve
             </div>
           </Link>
 
-          <Link href="/marchandise" className="group relative rounded-2xl border border-amber-100 dark:border-gray-700 bg-white dark:bg-gray-800 p-5 shadow-sm hover:shadow-lg hover:border-amber-300 dark:hover:border-gray-600 transition-all duration-200 overflow-hidden">
+          <Link href="/marchandise" className="group relative rounded-2xl border border-amber-100 dark:border-gray-700 bg-white dark:bg-gray-800 p-4 shadow-sm hover:shadow-lg hover:border-amber-300 dark:hover:border-gray-600 transition-all duration-200 overflow-hidden">
             <div className="absolute inset-0 bg-gradient-to-br from-amber-50/50 dark:from-gray-700/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
             <div className="relative flex items-start gap-3">
               <div className="p-2.5 rounded-xl bg-amber-100 dark:bg-gray-700 group-hover:bg-amber-200 dark:group-hover:bg-gray-600 transition-colors">
@@ -237,7 +237,7 @@ export default function DashboardView({ events, totalEvents, upcoming7d }: { eve
       </div>
 
       {/* Main content */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-3">
         {/* Interventions à venir */}
         <div className="space-y-6 lg:col-span-3">
           <div className="rounded-2xl border border-neutral-200 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-sm overflow-hidden">

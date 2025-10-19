@@ -32,7 +32,7 @@ export default async function Dashboard() {
   }).length
 
   return (
-    <div className="p-6">
+    <div className="p-4">
       <DashboardView events={events} totalEvents={totalEvents} upcoming7d={upcoming7d} />
     </div>
   )

@@ -27,16 +27,16 @@ export default function ProductForm() {
 
   return (
     <form onSubmit={onSubmit} className="space-y-3">
-      <div className="font-medium text-black">Ajouter un produit</div>
-      <input className="w-full border rounded-lg px-3 py-2 text-black" placeholder="SKU" value={sku} onChange={(e)=>setSku(e.target.value)} />
-      <input className="w-full border rounded-lg px-3 py-2 text-black" placeholder="Nom" value={name} onChange={(e)=>setName(e.target.value)} />
+      <div className="font-medium text-black dark:text-white">Ajouter un produit</div>
+      <input className="w-full border border-neutral-300 dark:border-gray-600 rounded-lg px-3 py-2 text-black dark:text-white bg-white dark:bg-gray-700" placeholder="SKU" value={sku} onChange={(e)=>setSku(e.target.value)} />
+      <input className="w-full border border-neutral-300 dark:border-gray-600 rounded-lg px-3 py-2 text-black dark:text-white bg-white dark:bg-gray-700" placeholder="Nom" value={name} onChange={(e)=>setName(e.target.value)} />
       <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-        <input type="number" className="w-full border rounded-lg px-3 py-2 text-black" placeholder="Quantité" value={quantity} onChange={(e)=>setQuantity(e.target.value === '' ? '' : Number(e.target.value))} />
-        <input type="number" className="w-full border rounded-lg px-3 py-2 text-black" placeholder="Prix achat" value={costPrice} onChange={(e)=>setCostPrice(e.target.value === '' ? '' : Number(e.target.value))} />
-        <input type="number" className="w-full border rounded-lg px-3 py-2 text-black" placeholder="Prix vente" value={salePrice} onChange={(e)=>setSalePrice(e.target.value === '' ? '' : Number(e.target.value))} />
+        <input type="number" className="w-full border border-neutral-300 dark:border-gray-600 rounded-lg px-3 py-2 text-black dark:text-white bg-white dark:bg-gray-700" placeholder="Quantité" value={quantity} onChange={(e)=>setQuantity(e.target.value === '' ? '' : Number(e.target.value))} />
+        <input type="number" className="w-full border border-neutral-300 dark:border-gray-600 rounded-lg px-3 py-2 text-black dark:text-white bg-white dark:bg-gray-700" placeholder="Prix achat" value={costPrice} onChange={(e)=>setCostPrice(e.target.value === '' ? '' : Number(e.target.value))} />
+        <input type="number" className="w-full border border-neutral-300 dark:border-gray-600 rounded-lg px-3 py-2 text-black dark:text-white bg-white dark:bg-gray-700" placeholder="Prix vente" value={salePrice} onChange={(e)=>setSalePrice(e.target.value === '' ? '' : Number(e.target.value))} />
       </div>
-      <input type="number" className="w-full border rounded-lg px-3 py-2 text-black" placeholder="Seuil bas" value={lowStockThreshold} onChange={(e)=>setLowStockThreshold(e.target.value === '' ? '' : Number(e.target.value))} />
-      <button disabled={loading} className="w-full px-4 py-2 rounded-lg bg-black text-white hover:opacity-90 transition disabled:opacity-50">{loading ? 'Ajout...' : 'Ajouter'}</button>
+      <input type="number" className="w-full border border-neutral-300 dark:border-gray-600 rounded-lg px-3 py-2 text-black dark:text-white bg-white dark:bg-gray-700" placeholder="Seuil bas" value={lowStockThreshold} onChange={(e)=>setLowStockThreshold(e.target.value === '' ? '' : Number(e.target.value))} />
+      <button disabled={loading} className="w-full px-4 py-2 rounded-lg bg-black dark:bg-gray-700 text-white hover:opacity-90 transition disabled:opacity-50">{loading ? 'Ajout...' : 'Ajouter'}</button>
     </form>
   )
 }

@@ -25,16 +25,16 @@ export default function UserForm() {
 
   return (
     <form onSubmit={onSubmit} className="space-y-3">
-      <div className="font-medium text-black">Ajouter un employé</div>
-      <input className="w-full border rounded-lg px-3 py-2 text-black" placeholder="Nom" value={name} onChange={(e)=>setName(e.target.value)} />
-      <input className="w-full border rounded-lg px-3 py-2 text-black" placeholder="Email" value={email} onChange={(e)=>setEmail(e.target.value)} />
-      <select className="w-full border rounded-lg px-3 py-2 text-black" value={role} onChange={(e)=>setRole(e.target.value)}>
+      <div className="font-medium text-black dark:text-white">Ajouter un employé</div>
+      <input className="w-full border border-neutral-300 dark:border-gray-600 rounded-lg px-3 py-2 text-black dark:text-white bg-white dark:bg-gray-700" placeholder="Nom" value={name} onChange={(e)=>setName(e.target.value)} />
+      <input className="w-full border border-neutral-300 dark:border-gray-600 rounded-lg px-3 py-2 text-black dark:text-white bg-white dark:bg-gray-700" placeholder="Email" value={email} onChange={(e)=>setEmail(e.target.value)} />
+      <select className="w-full border border-neutral-300 dark:border-gray-600 rounded-lg px-3 py-2 text-black dark:text-white bg-white dark:bg-gray-700" value={role} onChange={(e)=>setRole(e.target.value)}>
         <option value="technicien">Technicien</option>
         <option value="admin">Admin</option>
         <option value="commercial">Commercial</option>
       </select>
-      <input type="password" className="w-full border rounded-lg px-3 py-2 text-black" placeholder="Mot de passe (optionnel)" value={password} onChange={(e)=>setPassword(e.target.value)} />
-      <button disabled={loading} className="w-full px-4 py-2 rounded-lg bg-black text-white hover:opacity-90 transition disabled:opacity-50">{loading ? 'Ajout...' : 'Ajouter'}</button>
+      <input type="password" className="w-full border border-neutral-300 dark:border-gray-600 rounded-lg px-3 py-2 text-black dark:text-white bg-white dark:bg-gray-700" placeholder="Mot de passe (optionnel)" value={password} onChange={(e)=>setPassword(e.target.value)} />
+      <button disabled={loading} className="w-full px-4 py-2 rounded-lg bg-black dark:bg-gray-700 text-white hover:opacity-90 transition disabled:opacity-50">{loading ? 'Ajout...' : 'Ajouter'}</button>
     </form>
   )
 }
