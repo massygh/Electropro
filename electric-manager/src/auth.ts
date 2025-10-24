@@ -10,7 +10,6 @@ import Credentials from "next-auth/providers/credentials"
 import { PrismaAdapter } from "@auth/prisma-adapter"
 import { PrismaClient } from "@prisma/client"
 import bcrypt from "bcryptjs"
-import type { AccountType } from "@prisma/client"
 
 const prisma = new PrismaClient()
 
@@ -94,7 +93,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           id: user.id.toString(),
           email: user.email,
           name: user.name || `${user.firstName || ''} ${user.lastName || ''}`.trim(),
-          accountType: user.role as any, // Mapper role -> accountType pour compatibilité
+          role: user.role,
           image: user.image,
         }
       },
@@ -113,7 +112,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       // Si c'est une nouvelle connexion, ajouter les infos user au token
       if (user) {
         token.id = user.id
-        token.accountType = (user as any).accountType
+        token.role = (user as any).role
       }
       return token
     },
@@ -125,7 +124,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     async session({ session, token }) {
       if (token && session.user) {
         session.user.id = token.id as string
-        session.user.accountType = token.accountType as AccountType
+        session.user.role = token.role as string
       }
       return session
     },

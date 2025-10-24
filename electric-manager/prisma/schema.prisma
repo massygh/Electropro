@@ -7,13 +7,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// Enum pour les types de comptes
-enum AccountType {
-  ADMIN      // Administrateur (propriétaire)
-  PRO        // Professionnel (employé)
-  CLIENT     // Client
-}
-
 model User {
   id           Int          @id @default(autoincrement())
   firstName    String?
@@ -23,8 +16,7 @@ model User {
   emailVerified DateTime?   // Pour NextAuth
   phone        String?
   dateOfBirth  DateTime?
-  role         String?      // Ancien champ - peut être déprécié
-  accountType  AccountType  @default(PRO) // Type de compte
+  role         String       @default("PRO") // Type de compte: ADMIN, PRO, CLIENT
   password     String?      // Mot de passe hashé (optionnel pour migration)
   image        String?      // Photo de profil
   createdAt    DateTime     @default(now())
