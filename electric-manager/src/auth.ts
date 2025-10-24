@@ -79,12 +79,12 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           const requestedType = credentials.accountType as string
 
           // Si on demande PRO mais que c'est un CLIENT, refuser
-          if (requestedType === 'pro' && user.accountType === 'CLIENT') {
+          if (requestedType === 'pro' && user.role === 'CLIENT') {
             throw new Error("Accès réservé aux professionnels")
           }
 
           // Si on demande CLIENT mais que c'est un PRO/ADMIN, refuser
-          if (requestedType === 'client' && (user.accountType === 'PRO' || user.accountType === 'ADMIN')) {
+          if (requestedType === 'client' && (user.role === 'PRO' || user.role === 'ADMIN')) {
             throw new Error("Utilisez la connexion professionnelle")
           }
         }
@@ -94,7 +94,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           id: user.id.toString(),
           email: user.email,
           name: user.name || `${user.firstName || ''} ${user.lastName || ''}`.trim(),
-          accountType: user.accountType,
+          accountType: user.role as any, // Mapper role -> accountType pour compatibilité
           image: user.image,
         }
       },
