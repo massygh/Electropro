@@ -12,7 +12,7 @@ export default async function InterventionsPage() {
   const clients = await prisma.client.findMany({ orderBy: { name: 'asc' } })
   // Récupérer uniquement les utilisateurs PRO pour l'assignation
   const users = await prisma.user.findMany({
-    where: { accountType: 'PRO' },
+    where: { role: 'PRO' },
     orderBy: { email: 'asc' }
   })
   const jobs = await prisma.job.findMany({ orderBy: { scheduledAt: 'asc' }, include: { client: true, assignedTo: true } })
@@ -23,7 +23,7 @@ export default async function InterventionsPage() {
   const done = jobs.filter(j => j.status === 'done').length
   const cancelled = jobs.filter(j => j.status === 'cancelled').length
 
-  const isPro = session?.user?.accountType === 'PRO'
+  const isPro = session?.user?.role === 'PRO'
 
   return (
     <div className="p-4">

@@ -11,16 +11,16 @@ export default function DashboardView({
   events,
   totalEvents,
   upcoming7d,
-  accountType
+  role
 }: {
   events: EventItem[]
   totalEvents: number
   upcoming7d: number
-  accountType: string
+  role: string
 }) {
   const [deletingId, setDeletingId] = useState<number | null>(null)
   const [updatingId, setUpdatingId] = useState<number | null>(null)
-  const isAdmin = accountType === 'ADMIN'
+  const isAdmin = role === 'ADMIN'
 
   const upcomingText = useMemo(() => `${upcoming7d} dans les 7 jours`, [upcoming7d])
 

@@ -9,7 +9,7 @@ interface User {
   lastName: string | null
   email: string
   phone: string | null
-  accountType: string
+  role: string
   createdAt: string
   emailVerified: Date | null
 }
@@ -26,7 +26,7 @@ export default function UtilisateursPage() {
     email: '',
     phone: '',
     password: '',
-    accountType: 'PRO'
+    role: 'PRO'
   })
 
   useEffect(() => {
@@ -64,7 +64,7 @@ export default function UtilisateursPage() {
 
   const openCreateModal = () => {
     setModalMode('create')
-    setFormData({ name: '', email: '', phone: '', password: '', accountType: 'PRO' })
+    setFormData({ name: '', email: '', phone: '', password: '', role: 'PRO' })
     setShowModal(true)
   }
 
@@ -76,7 +76,7 @@ export default function UtilisateursPage() {
       email: user.email,
       phone: user.phone || '',
       password: '',
-      accountType: user.accountType
+      role: user.role
     })
     setShowModal(true)
   }
@@ -172,11 +172,11 @@ export default function UtilisateursPage() {
                     <td className="px-6 py-4 text-sm text-gray-600 dark:text-gray-400">{user.phone || '-'}</td>
                     <td className="px-6 py-4">
                       <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
-                        user.accountType === 'ADMIN' ? 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300' :
-                        user.accountType === 'PRO' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300' :
+                        user.role === 'ADMIN' ? 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300' :
+                        user.role === 'PRO' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300' :
                         'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300'
                       }`}>
-                        {user.accountType === 'ADMIN' ? 'Admin' : user.accountType === 'PRO' ? 'Pro' : 'Client'}
+                        {user.role === 'ADMIN' ? 'Admin' : user.role === 'PRO' ? 'Pro' : 'Client'}
                       </span>
                     </td>
                     <td className="px-6 py-4 text-sm text-gray-600 dark:text-gray-400">
@@ -271,8 +271,8 @@ export default function UtilisateursPage() {
                   Type de compte
                 </label>
                 <select
-                  value={formData.accountType}
-                  onChange={(e) => setFormData({ ...formData, accountType: e.target.value })}
+                  value={formData.role}
+                  onChange={(e) => setFormData({ ...formData, role: e.target.value })}
                   className="w-full px-4 py-2 rounded-lg border-2 border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:border-indigo-500 outline-none"
                 >
                   <option value="PRO">Professionnel</option>

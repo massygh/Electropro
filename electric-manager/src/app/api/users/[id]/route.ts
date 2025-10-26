@@ -12,7 +12,7 @@ export async function PATCH(
   try {
     const session = await auth()
 
-    if (!session || session.user.accountType !== 'ADMIN') {
+    if (!session || session.user.role !== 'ADMIN') {
       return NextResponse.json(
         { error: "Non autorise" },
         { status: 403 }
@@ -21,13 +21,13 @@ export async function PATCH(
 
     const userId = parseInt(params.id)
     const body = await req.json()
-    const { name, email, phone, password, accountType } = body
+    const { name, email, phone, password, role } = body
 
     const updateData: any = {}
     if (name !== undefined) updateData.name = name
     if (email !== undefined) updateData.email = email
     if (phone !== undefined) updateData.phone = phone
-    if (accountType !== undefined) updateData.accountType = accountType
+    if (role !== undefined) updateData.role = role
     if (password) {
       updateData.password = await bcrypt.hash(password, 10)
     }
@@ -40,14 +40,14 @@ export async function PATCH(
         name: true,
         email: true,
         phone: true,
-        accountType: true,
+        role: true,
         createdAt: true,
         client: true,
       }
     })
 
     // Si c'est un CLIENT, mettre à jour ou créer le profil Client associé
-    if (user.accountType === 'CLIENT') {
+    if (user.role === 'CLIENT') {
       const clientUpdateData: any = {}
       if (name !== undefined) clientUpdateData.name = name
       if (email !== undefined) clientUpdateData.email = email
@@ -96,7 +96,7 @@ export async function DELETE(
   try {
     const session = await auth()
 
-    if (!session || session.user.accountType !== 'ADMIN') {
+    if (!session || session.user.role !== 'ADMIN') {
       return NextResponse.json(
         { error: "Non autorise" },
         { status: 403 }

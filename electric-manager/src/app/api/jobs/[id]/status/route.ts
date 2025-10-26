@@ -34,9 +34,9 @@ export async function PATCH(
     })
 
     // Creer une notification pour l'admin si c'est un PRO qui change le statut
-    if (session.user.accountType === 'PRO') {
+    if (session.user.role === 'PRO') {
       const adminUsers = await prisma.user.findMany({
-        where: { accountType: 'ADMIN' },
+        where: { role: 'ADMIN' },
         select: { id: true }
       })
 

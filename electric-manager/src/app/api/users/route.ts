@@ -9,7 +9,7 @@ export async function GET() {
   try {
     const session = await auth()
 
-    if (!session || session.user.accountType !== 'ADMIN') {
+    if (!session || session.user.role !== 'ADMIN') {
       return NextResponse.json(
         { error: "Non autorise" },
         { status: 403 }
@@ -24,7 +24,7 @@ export async function GET() {
         lastName: true,
         email: true,
         phone: true,
-        accountType: true,
+        role: true,
         createdAt: true,
         emailVerified: true,
       },
@@ -50,7 +50,7 @@ export async function POST(req: Request) {
   try {
     const session = await auth()
 
-    if (!session || session.user.accountType !== 'ADMIN') {
+    if (!session || session.user.role !== 'ADMIN') {
       return NextResponse.json(
         { error: "Non autorise" },
         { status: 403 }
@@ -58,9 +58,9 @@ export async function POST(req: Request) {
     }
 
     const body = await req.json()
-    const { name, email, phone, password, accountType } = body
+    const { name, email, phone, password, role } = body
 
-    if (!email || !password || !accountType) {
+    if (!email || !password || !role) {
       return NextResponse.json(
         { error: "Email, mot de passe et type de compte sont requis" },
         { status: 400 }
@@ -86,20 +86,20 @@ export async function POST(req: Request) {
         email,
         phone: phone || null,
         password: hashedPassword,
-        accountType,
+        role,
       },
       select: {
         id: true,
         name: true,
         email: true,
         phone: true,
-        accountType: true,
+        role: true,
         createdAt: true,
       }
     })
 
     // Si c'est un CLIENT, créer automatiquement un profil Client associé
-    if (accountType === 'CLIENT') {
+    if (role === 'CLIENT') {
       await prisma.client.create({
         data: {
           name: name || email,

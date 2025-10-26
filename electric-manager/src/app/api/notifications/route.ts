@@ -8,7 +8,7 @@ export async function GET() {
   try {
     const session = await auth()
 
-    if (!session || session.user.accountType !== 'ADMIN') {
+    if (!session || session.user.role !== 'ADMIN') {
       return NextResponse.json(
         { error: "Non autorise" },
         { status: 403 }
@@ -52,7 +52,7 @@ export async function PATCH(req: Request) {
   try {
     const session = await auth()
 
-    if (!session || session.user.accountType !== 'ADMIN') {
+    if (!session || session.user.role !== 'ADMIN') {
       return NextResponse.json(
         { error: "Non autorise" },
         { status: 403 }

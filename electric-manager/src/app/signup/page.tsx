@@ -77,7 +77,7 @@ export default function SignupPage() {
       const result = await signIn('credentials', {
         email: formData.email,
         password: formData.password,
-        accountType: 'client',
+        role: 'client',
         redirect: false, // Ne pas rediriger automatiquement
       })
 

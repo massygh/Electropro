@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation'
 
 export default function LoginPage() {
   const router = useRouter()
-  const [accountType, setAccountType] = useState<'pro' | 'client'>('pro')
+  const [role, setRole] = useState<'pro' | 'client'>('pro')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
@@ -25,7 +25,7 @@ export default function LoginPage() {
       const result = await signIn('credentials', {
         email,
         password,
-        accountType, // Passer le type de compte sélectionné
+        role, // Passer le type de compte sélectionné
         redirect: false, // Ne pas rediriger automatiquement
       })
 
@@ -36,7 +36,7 @@ export default function LoginPage() {
       }
 
       // Connexion réussie! Rediriger selon le type de compte
-      if (accountType === 'pro') {
+      if (role === 'pro') {
         router.push('/dashboard')
       } else {
         router.push('/client-portal')
@@ -85,9 +85,9 @@ export default function LoginPage() {
           <div className="flex gap-2 p-1 bg-gray-100 dark:bg-gray-700 rounded-xl mb-8">
             <button
               type="button"
-              onClick={() => setAccountType('pro')}
+              onClick={() => setRole('pro')}
               className={`flex-1 py-3 px-4 rounded-lg font-semibold transition-all duration-200 ${
-                accountType === 'pro'
+                role === 'pro'
                   ? 'bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 text-white shadow-lg'
                   : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
               }`}
@@ -96,9 +96,9 @@ export default function LoginPage() {
             </button>
             <button
               type="button"
-              onClick={() => setAccountType('client')}
+              onClick={() => setRole('client')}
               className={`flex-1 py-3 px-4 rounded-lg font-semibold transition-all duration-200 ${
-                accountType === 'client'
+                role === 'client'
                   ? 'bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 text-white shadow-lg'
                   : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
               }`}

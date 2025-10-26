@@ -2,7 +2,7 @@
  * Extensions des types NextAuth
  *
  * Ce fichier étend les types de NextAuth pour inclure nos champs personnalisés.
- * Sinon TypeScript ne saurait pas que `accountType` existe.
+ * Sinon TypeScript ne saurait pas que `role` existe.
  */
 
 import { AccountType } from "@prisma/client"
@@ -19,7 +19,7 @@ declare module "next-auth" {
     email: string
     name?: string | null
     image?: string | null
-    accountType: AccountType
+    role: AccountType
   }
 
   /**
@@ -31,7 +31,7 @@ declare module "next-auth" {
       email: string
       name?: string | null
       image?: string | null
-      accountType: AccountType
+      role: AccountType
     }
   }
 }
@@ -43,6 +43,6 @@ declare module "next-auth/jwt" {
    */
   interface JWT {
     id: string
-    accountType: AccountType
+    role: AccountType
   }
 }

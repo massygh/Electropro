@@ -13,7 +13,7 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
   const hideNavigation = pathname === '/' || pathname === '/login' || pathname === '/signup'
 
   // Determine which navbar to show based on account type
-  const accountType = session?.user?.accountType
+  const accountType = session?.user?.role
 
   return (
     <>

@@ -13,13 +13,13 @@ export default async function Dashboard() {
     redirect('/login')
   }
 
-  const accountType = session.user.accountType
+  const role = session.user.role
   const userId = parseInt(session.user.id)
 
   let events: { id: number; title: string; start: string }[] = []
   try {
     // Si PRO, afficher uniquement les interventions assignées
-    const jobs = accountType === 'PRO'
+    const jobs = role === 'PRO'
       ? await prisma.job.findMany({ where: { assignedToId: userId } })
       : await prisma.job.findMany()
 
@@ -52,7 +52,7 @@ export default async function Dashboard() {
         events={events}
         totalEvents={totalEvents}
         upcoming7d={upcoming7d}
-        accountType={accountType}
+        role={role}
       />
     </div>
   )

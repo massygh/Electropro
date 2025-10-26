@@ -49,7 +49,7 @@ export default function Navigation() {
 
   // Charger les notifications pour les ADMIN
   useEffect(() => {
-    if (session?.user?.accountType === 'ADMIN') {
+    if (session?.user?.role === 'ADMIN') {
       fetchNotifications()
       // Rafraichir toutes les 30 secondes
       const interval = setInterval(fetchNotifications, 30000)
@@ -109,7 +109,7 @@ export default function Navigation() {
         <nav className="flex items-center gap-4 text-sm">
           <Link href="/dashboard" className="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/15 dark:bg-white/5 dark:hover:bg-white/10 transition">Dashboard</Link>
           <Link href="/interventions" className="px-3 py-1.5 rounded-lg hover:bg-white/10 dark:hover:bg-white/10 transition">Interventions</Link>
-          {session?.user?.accountType === 'ADMIN' && (
+          {session?.user?.role === 'ADMIN' && (
             <>
               <Link href="/utilisateurs" className="px-3 py-1.5 rounded-lg hover:bg-white/10 dark:hover:bg-white/10 transition">Utilisateurs</Link>
               <Link href="/chantiers" className="px-3 py-1.5 rounded-lg hover:bg-white/10 dark:hover:bg-white/10 transition">Chantiers</Link>
@@ -117,7 +117,7 @@ export default function Navigation() {
               <Link href="/marchandise" className="px-3 py-1.5 rounded-lg hover:bg-white/10 dark:hover:bg-white/10 transition">Marchandise</Link>
             </>
           )}
-          {session?.user?.accountType === 'ADMIN' && (
+          {session?.user?.role === 'ADMIN' && (
             <div className="relative ml-2 notification-container">
               <button
                 onClick={() => setShowNotifications(!showNotifications)}
@@ -186,9 +186,9 @@ export default function Navigation() {
               <div className="text-right">
                 <div className="text-sm font-semibold">{session.user.name}</div>
                 <div className="text-xs opacity-75">
-                  {session.user.accountType === 'ADMIN' && 'Administrateur'}
-                  {session.user.accountType === 'PRO' && 'Professionnel'}
-                  {session.user.accountType === 'CLIENT' && 'Client'}
+                  {session.user.role === 'ADMIN' && 'Administrateur'}
+                  {session.user.role === 'PRO' && 'Professionnel'}
+                  {session.user.role === 'CLIENT' && 'Client'}
                 </div>
               </div>
               <button
