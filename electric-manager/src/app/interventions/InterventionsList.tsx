@@ -5,6 +5,7 @@ import EditJobModal from './EditJobModal'
 
 type Job = {
   id: number;
+  interventionNumber?: string | null;
   title: string;
   description?: string | null;
   address?: string | null;
@@ -214,6 +215,11 @@ export default function InterventionsList({ jobs, clients, users, isPro }: { job
                     />}
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 mb-2">
+                        {j.interventionNumber && (
+                          <span className="inline-flex items-center px-2.5 py-0.5 rounded-lg bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-500 dark:to-purple-500 text-white text-xs font-bold shadow-sm flex-shrink-0">
+                            {j.interventionNumber}
+                          </span>
+                        )}
                         <h3 className="text-lg font-semibold text-black dark:text-white truncate">{j.title}</h3>
                         <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${getStatusBadge(j.status)} flex-shrink-0`}>
                           {getStatusLabel(j.status)}

@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma"
 import { NextResponse } from "next/server"
+import { generateInterventionNumber } from "@/lib/interventionNumber"
 
 export async function GET() {
   const jobs = await prisma.job.findMany({ include: { client: true } })
@@ -8,6 +9,12 @@ export async function GET() {
 
 export async function POST(req: Request) {
   const body = await req.json()
+
+  // Générer automatiquement le numéro d'intervention si non fourni
+  if (!body.interventionNumber) {
+    body.interventionNumber = await generateInterventionNumber()
+  }
+
   const job = await prisma.job.create({ data: body })
   return NextResponse.json(job)
 }

@@ -171,7 +171,14 @@ export default async function ClientPortalPage() {
                 <div key={job.id} className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 p-5 hover:shadow-xl transition">
                   <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 mb-3">
                     <div className="flex-1">
-                      <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-1">{job.title}</h3>
+                      <div className="flex items-center gap-2 mb-1">
+                        {job.interventionNumber && (
+                          <span className="inline-flex items-center px-2.5 py-0.5 rounded-lg bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-500 dark:to-purple-500 text-white text-xs font-bold shadow-sm">
+                            {job.interventionNumber}
+                          </span>
+                        )}
+                        <h3 className="text-lg font-bold text-gray-900 dark:text-white">{job.title}</h3>
+                      </div>
                       {job.description && (
                         <p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-2">{job.description}</p>
                       )}

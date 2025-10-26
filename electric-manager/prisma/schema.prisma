@@ -92,18 +92,19 @@ model Client {
 }
 
 model Job {
-  id           Int       @id @default(autoincrement())
-  client       Client    @relation(fields: [clientId], references: [id])
-  clientId     Int
-  title        String
-  description  String?
-  address      String?   // Nouveau champ - adresse de l'intervention
-  scheduledAt  DateTime?
-  durationMin  Int?
-  status       String    @default("scheduled")
-  assignedTo   User?     @relation(fields: [assignedToId], references: [id])
-  assignedToId Int?
-  createdAt    DateTime  @default(now())
+  id                 Int       @id @default(autoincrement())
+  interventionNumber String?   @unique // Numéro d'intervention unique (ex: INT-2025-001)
+  client             Client    @relation(fields: [clientId], references: [id])
+  clientId           Int
+  title              String
+  description        String?
+  address            String?   // Nouveau champ - adresse de l'intervention
+  scheduledAt        DateTime?
+  durationMin        Int?
+  status             String    @default("scheduled")
+  assignedTo         User?     @relation(fields: [assignedToId], references: [id])
+  assignedToId       Int?
+  createdAt          DateTime  @default(now())
 }
 
 model Product {
