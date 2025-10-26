@@ -51,14 +51,14 @@ export async function POST(request: Request) {
         email,
         phone: phone || null,
         password: hashedPassword,
-        accountType: 'CLIENT',
+        role: 'CLIENT',
       },
       select: {
         id: true,
         name: true,
         email: true,
         phone: true,
-        accountType: true,
+        role: true,
         createdAt: true,
       }
     })
