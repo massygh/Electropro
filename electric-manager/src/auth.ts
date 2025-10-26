@@ -150,7 +150,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         return Response.redirect(new URL(`/login?callbackUrl=${pathname}`, request.url))
       }
 
-      const accountType = (auth.user as any).accountType
+      const role = (auth.user as any).role
 
       // Pages réservées aux ADMIN uniquement
       const isAdminOnlyRoute = pathname.startsWith('/utilisateurs') ||
@@ -158,7 +158,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           pathname.startsWith('/marchandise') ||
           pathname.startsWith('/agenda')
 
-      if (isAdminOnlyRoute && accountType !== 'ADMIN') {
+      if (isAdminOnlyRoute && role !== 'ADMIN') {
         return Response.redirect(new URL('/dashboard', request.url))
       }
 
@@ -166,12 +166,12 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       const isProRoute = pathname.startsWith('/dashboard') ||
           pathname.startsWith('/interventions')
 
-      if (isProRoute && accountType !== 'PRO' && accountType !== 'ADMIN') {
+      if (isProRoute && role !== 'PRO' && role !== 'ADMIN') {
         return Response.redirect(new URL('/client-portal', request.url))
       }
 
       // Portail client - réservé aux clients
-      if (pathname.startsWith('/client-portal') && accountType !== 'CLIENT') {
+      if (pathname.startsWith('/client-portal') && role !== 'CLIENT') {
         return Response.redirect(new URL('/dashboard', request.url))
       }
 
