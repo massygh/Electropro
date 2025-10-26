@@ -38,7 +38,12 @@ export default function InterventionsList({ jobs, clients, users, isPro }: { job
 
   const filtered = useMemo(() => {
     let out = jobs.filter(j => {
-      if (q && !j.title.toLowerCase().includes(q.toLowerCase())) return false
+      if (q) {
+        const searchLower = q.toLowerCase()
+        const matchTitle = j.title.toLowerCase().includes(searchLower)
+        const matchNumber = j.interventionNumber?.toLowerCase().includes(searchLower)
+        if (!matchTitle && !matchNumber) return false
+      }
       if (clientId && j.client?.id !== clientId) return false
       if (date) {
         const ds = j.scheduledAt ? new Date(j.scheduledAt) : null
@@ -131,9 +136,9 @@ export default function InterventionsList({ jobs, clients, users, isPro }: { job
   }
 
   function exportCSV() {
-    const rows = [['ID','Titre','Client','Date','Statut']]
+    const rows = [['Numéro','ID','Titre','Client','Date','Statut']]
     filtered.forEach(j => rows.push([
-      String(j.id), j.title, j.client?.name || '', j.scheduledAt ? new Date(j.scheduledAt).toLocaleString() : '', j.status || ''
+      j.interventionNumber || '', String(j.id), j.title, j.client?.name || '', j.scheduledAt ? new Date(j.scheduledAt).toLocaleString() : '', j.status || ''
     ]))
     const csv = rows.map(r => r.map(f => '"'+String(f).replace(/"/g,'""')+'"').join(',')).join('\n')
     const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' })
@@ -148,7 +153,7 @@ export default function InterventionsList({ jobs, clients, users, isPro }: { job
   return (
     <div className="space-y-3">
       <div className="grid grid-cols-1 md:grid-cols-5 gap-2">
-        <input className="w-full border border-neutral-300 dark:border-gray-600 bg-white dark:bg-gray-700 rounded-lg px-3 py-2 text-black dark:text-white text-sm" placeholder="Recherche titre" value={q} onChange={(e)=>setQ(e.target.value)} />
+        <input className="w-full border border-neutral-300 dark:border-gray-600 bg-white dark:bg-gray-700 rounded-lg px-3 py-2 text-black dark:text-white text-sm" placeholder="🔍 Recherche par titre ou numéro (ex: INT-2025-001)" value={q} onChange={(e)=>setQ(e.target.value)} />
         <select className="w-full border border-neutral-300 dark:border-gray-600 bg-white dark:bg-gray-700 rounded-lg px-3 py-2 text-black dark:text-white text-sm" value={clientId} onChange={(e)=>setClientId(e.target.value ? Number(e.target.value) : '')}>
           <option value="">Tous les clients</option>
           {clients.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
